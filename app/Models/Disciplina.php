@@ -7,11 +7,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+@deprecated
+*/
 class Disciplina extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nombre', 'precio'];
+    protected $fillable = ['nombre', 'monto'];
 
 
 }

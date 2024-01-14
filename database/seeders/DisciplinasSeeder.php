@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Disciplina;
+use App\Models\Discipline;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -24,6 +25,21 @@ class DisciplinasSeeder extends Seeder
         ]);
 
         Disciplina::create([
+            'nombre' => 'nivel_argentina',
+            'monto' => 3000,
+        ]);
+
+        Discipline::create([
+            'nombre' => 'intermedio',
+            'monto' => 1000,
+        ]);
+
+        Discipline::create([
+            'nombre' => 'facil',
+            'monto' => 2000,
+        ]);
+
+        Discipline::create([
             'nombre' => 'nivel_argentina',
             'monto' => 3000,
         ]);

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Alumno;
 use App\Models\Cuota;
 use App\Models\Disciplina;
-
+use App\Models\Discipline;
 // use App\Notifications\SweetAlertNotification;
 use Illuminate\Http\Request;
 
@@ -25,7 +25,7 @@ class AlumnoController extends Controller
 
     public function create()
     {
-        $disciplinas = Disciplina::all();
+        $disciplinas = Discipline::all();
         return view('alumnos.create', compact('disciplinas'));
     }
 
@@ -42,7 +42,7 @@ class AlumnoController extends Controller
 
     // Asociar las disciplinas al alumno
     if ($request->has('disciplinas')) {
-        $alumno->disciplinas()->attach($request->input('disciplinas'));
+        $alumno->disciplinas()->sync($request->input('disciplinas'));
     }
 
     // Crear cuotas para el alumno

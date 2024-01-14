@@ -17,7 +17,8 @@ class Cuota extends Model
 
     public function disciplinas()
     {
-        return $this->alumno->belongsToMany(Disciplina::class, 'alumno_disciplina');
+        // return $this->alumno->belongsToMany(Disciplina::class, 'alumno_disciplina');
+        return $this->morphToMany(Discipline::class, 'disciplinable');
     }
 
     // Método para calcular el total

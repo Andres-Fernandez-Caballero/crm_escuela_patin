@@ -30,7 +30,8 @@ class Alumno extends Model
     // Relación con las disciplinas del alumno
     public function disciplinas()
     {
-        return $this->belongsToMany(Disciplina::class, 'alumno_disciplina');
+        // return $this->belongsToMany(Disciplina::class, 'alumno_disciplina');
+        return $this->morphToMany(Discipline::class, 'disciplinable');
     }
     
 
@@ -39,11 +40,14 @@ class Alumno extends Model
         $meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
         foreach ($meses as $mes) {
-            $this->cuotas()->create([
+           $cuota = $this->cuotas()->create([
                 'mes' => $mes,
-                'disciplinas' => $this->disciplinas,
                 'estado_pago' => 'no_corresponde', // Puedes establecer el estado predeterminado que desees
             ]);
+            $disciplinasIds = $this->disciplinas->pluck('id'); // Obtiene los IDs de las disciplinas del alumno
+
+            $cuota->disciplinas()->sync($disciplinasIds);
+            $cuota->save();
         }
     }
 }
