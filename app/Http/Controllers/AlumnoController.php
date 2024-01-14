@@ -58,7 +58,7 @@ class AlumnoController extends Controller
 
     public function edit(Alumno $alumno)
     {
-        $disciplinas = Disciplina::all();
+        $disciplinas = Discipline::all();
         return view('alumnos.edit', compact('alumno', 'disciplinas'));
     }
 
@@ -96,6 +96,16 @@ public function update(Request $request, Alumno $alumno)
 
     // Sincroniza las disciplinas del alumno
     $alumno->disciplinas()->sync($request->disciplinas);
+    $alumno->refresh();
+    
+    $alumno->cuotas->where('estado_pago', '!=', 'pagada')->each(function ($cuota) {
+        $cuota->disciplinas()->sync($cuota->alumno->disciplinas);
+    });
+
+
+
+
+
 
     // Actualiza el total de cuotas pagadas solo si no hay cuotas pagadas
     if ($totalCuotasPagadas == 0.00) {
