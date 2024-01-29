@@ -16,9 +16,9 @@ class Alumno extends Model
     {
         // Suma los totales de las cuotas pagadas del alumno
         return $this->cuotas()->where('estado_pago', 'pagada')->sum('total');
-        
-        // traer todos las cuotas de año en curso 
-        // sumar las cuotas con estado pendiente o no_paga 
+
+        // traer todos las cuotas de año en curso
+        // sumar las cuotas con estado pendiente o no_paga
     }
 
     // Relación con las cuotas del alumno
@@ -33,7 +33,12 @@ class Alumno extends Model
         // return $this->belongsToMany(Disciplina::class, 'alumno_disciplina');
         return $this->morphToMany(Discipline::class, 'disciplinable');
     }
-    
+
+    public function getFullNameAttribute() // metodo magico
+    {
+        return $this->nombre . ' ' . $this->apellido;
+    }
+
 
     public function crearCuotas()
     {

@@ -13,14 +13,27 @@ class AlumnoController extends Controller
 {
     public function index()
     {
+
+        if (isset($_GET['filter']))
+        {
+            $filtro = $_GET['filter'];
+            // quiero un where con 2 clausulas
+
+
+            $alumnos = Alumno::where('nombre', 'like', '%'.$filtro.'%')
+            ->orWhere('apellido', 'like', '%'.$filtro.'%')
+            ->get();
+        }else
+        {
+            $alumnos = Alumno::all();
+        }
         // Utiliza una consulta SQL para calcular el ingreso bruto anual
         $ingresoBrutoAnual = Alumno::join('cuotas', 'alumnos.id', '=', 'cuotas.alumno_id')
             ->where('cuotas.estado_pago', 'pagada')
             ->sum('cuotas.total');
 
-        $alumnos = Alumno::all();
 
-        return view('alumnos.index', compact('alumnos', 'ingresoBrutoAnual'));
+        return view('alumnos.index', ['alumnos' => $alumnos, 'ingresoBrutoAnual' => $ingresoBrutoAnual]);
     }
 
     public function create()
@@ -64,7 +77,7 @@ class AlumnoController extends Controller
 
 
 
-    
+
 public function update(Request $request, Alumno $alumno)
 {
     $request->validate([
@@ -97,7 +110,7 @@ public function update(Request $request, Alumno $alumno)
     // Sincroniza las disciplinas del alumno
     $alumno->disciplinas()->sync($request->disciplinas);
     $alumno->refresh();
-    
+
     $alumno->cuotas->where('estado_pago', '!=', 'pagada')->each(function ($cuota) {
         $cuota->disciplinas()->sync($cuota->alumno->disciplinas);
     });
@@ -132,6 +145,6 @@ public function update(Request $request, Alumno $alumno)
 
     return view('alumnos.show', compact('alumno', 'cuotas'));
 }
-    
+
 
 }

@@ -8,6 +8,12 @@
     <a href="{{ route('alumnos.create') }}" class="btn btn-primary agregarAlumno">Agregar Patinadores</a>
 
     <table class="table">
+        <form action="/alumnos">
+            @csrf
+            @method('GET')
+            <input type="search" name="filter" placeholder="buscar por nombre y apellido">
+            <button type="submit">Buscar</button>
+        </form>
         <thead>
             <tr>
                 <th>DNI</th>
